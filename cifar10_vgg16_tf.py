@@ -24,8 +24,16 @@ example of vgg16-cifar10 (single CPU/GPU)
 import tensorflow as tf
 import argparse
 
-tf.config.gpu.set_per_process_memory_fraction(0.75)
-tf.config.gpu.set_per_process_memory_growth(True)
+gpus = tf.config.list_physical_devices('GPU')
+if gpus:
+    # Restrict TensorFlow to only use the first GPU
+    try:
+        tf.config.experimental.set_visible_devices(gpus[0], 'GPU')
+        logical_gpus = tf.config.experimental.list_logical_devices('GPU')
+        print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPU")
+    except RuntimeError as e:
+        # Visible devices must be set before GPUs have been initialized
+        print(e)
 
 from tensorflow.keras import datasets, layers, Model
 from tensorflow.keras.applications.vgg16 import VGG16
