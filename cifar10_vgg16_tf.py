@@ -24,6 +24,7 @@ example of vgg16-cifar10 (single CPU/GPU)
 import tensorflow as tf
 import argparse
 
+"""
 gpus = tf.config.list_physical_devices('GPU')
 if gpus:
     # Restrict TensorFlow to only use the first GPU
@@ -38,6 +39,11 @@ if gpus:
 config = tf.compat.v1.ConfigProto()
 config.gpu_options.allow_growth = True
 session =tf.compat.v1.InteractiveSession(config=config)        
+"""
+
+gpus = tf.config.experimental.list_physical_devices('GPU')
+
+tf.config.experimental.set_virtual_device_configuration(gpus[0], [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=1024*4)])
 
 from tensorflow.keras import datasets, layers, Model
 from tensorflow.keras.applications.vgg16 import VGG16
