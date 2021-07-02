@@ -34,6 +34,10 @@ if gpus:
     except RuntimeError as e:
         # Visible devices must be set before GPUs have been initialized
         print(e)
+        
+config = tf.compat.v1.ConfigProto()
+config.gpu_options.allow_growth = True
+session =tf.compat.v1.InteractiveSession(config=config)        
 
 from tensorflow.keras import datasets, layers, Model
 from tensorflow.keras.applications.vgg16 import VGG16
